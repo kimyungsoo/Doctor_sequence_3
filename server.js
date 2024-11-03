@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 
-const server = new WebSocket.Server({ port:10000 });
+const port = process.env.PORT || 8080;
+const server = new WebSocket.Server({ port });
 
 let currentChair = '선택되지 않음';
 let nextChairs = ['비어 있음', '비어 있음', '비어 있음'];
