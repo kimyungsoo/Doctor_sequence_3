@@ -24,7 +24,7 @@
 
   <script>
     const currentChairElement = document.getElementById('currentChair');
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket('wss://https://doctor-sequence.onrender.com');
 
     // 서버에서 메시지를 받으면 현재 체어 상태를 업데이트
     ws.onmessage = (event) => {
