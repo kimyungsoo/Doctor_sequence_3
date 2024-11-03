@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Window</title>
+</head>
+<body>
+  <h1>메인 페이지</h1>
+  <button onclick="openPopup()">팝업 창 열기</button>
+
+  <script>
+    function openPopup() {
+      const width = 400;    // 팝업 창의 너비
+      const height = 300;   // 팝업 창의 높이
+      const left = screen.width - width;  // 화면의 너비에서 팝업 창 너비를 뺀 위치
+      const top = screen.height - height; // 화면의 높이에서 팝업 창 높이를 뺀 위치
+
+      window.open(
+        'popup.html',       // 팝업 창에 표시할 페이지
+        'PopupWindow',      // 팝업 창 이름
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+    }
+  </script>
+</body>
+</html>
