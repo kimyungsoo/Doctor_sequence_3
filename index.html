@@ -3,24 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Window</title>
+  <title>진료 체어 관리</title>
 </head>
 <body>
-  <h1>메인 페이지</h1>
-  <button onclick="openPopup()">팝업 창 열기</button>
+  <h1>진료 체어 관리 시스템</h1>
+
+  <p>현재 진료 중인 체어: <span id="currentChair">선택되지 않음</span>
+    <button onclick="endCurrentChair()">진료 종료</button>
+  </p>
+
+  <p>다음 진료할 체어:</p>
+  <ul>
+    <li id="nextChair1">비어 있음</li>
+    <li id="nextChair2">비어 있음</li>
+    <li id="nextChair3">비어 있음</li>
+  </ul>
+
+  <button onclick="selectChair('1번')">1번</button>
+  <button onclick="selectChair('2번')">2번</button>
+  <button onclick="selectChair('3번')">3번</button>
+  <button onclick="selectChair('4번')">4번</button>
+  <button onclick="selectChair('5번')">5번</button>
+  <button onclick="selectChair('6번')">6번</button>
+  <button onclick="selectChair('7번')">7번</button>
+  <button onclick="selectChair('8번')">8번</button>
+  <button onclick="selectChair('임플란트실_1')">임플란트실_1</button>
+  <button onclick="selectChair('임플란트실_2')">임플란트실_2</button>
 
   <script>
-    function openPopup() {
-      const width = 400;    // 팝업 창의 너비
-      const height = 300;   // 팝업 창의 높이
-      const left = screen.width - width;  // 화면의 너비에서 팝업 창 너비를 뺀 위치
-      const top = screen.height - height; // 화면의 높이에서 팝업 창 높이를 뺀 위치
+    const ws = new WebSocket('wss://doctor-sequence.onrender.com');
+    const currentChairElement = document.getElementById('currentChair');
+    const nextChairsElements = [
+      document.getElementById('nextChair1'),
+      document.getElementById('nextChair2'),
+      document.getElementById('nextChair3'),
+    ];
 
-      window.open(
-        'popup.html',       // 팝업 창에 표시할 페이지
-        'PopupWindow',      // 팝업 창 이름
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
+    // 서버에서 현재 상태를 받아 화면 업데이트
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      currentChairElement.textContent = data.currentChair;
+      nextChairsElements.forEach((element, index) => {
+        element.textContent = data.nextChairs[index];
+      });
+    };
+
+    // 체어 선택 시 서버에 선택 요청 전송
+    function selectChair(chairName) {
+      ws.send(JSON.stringify({ action: 'selectChair', chair: chairName }));
+    }
+
+    // 진료 종료 시 서버에 종료 요청 전송
+    function endCurrentChair() {
+      ws.send(JSON.stringify({ action: 'endCurrentChair' }));
     }
   </script>
 </body>
