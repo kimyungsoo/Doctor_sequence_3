@@ -1,8 +1,6 @@
 // server.js
 const WebSocket = require('ws');
-
-const port = process.env.PORT || 8080;
-const server = new WebSocket.Server({ port });
+const server = new WebSocket.Server({ port:10000 });
 
 let currentChair = '선택되지 않음';
 
