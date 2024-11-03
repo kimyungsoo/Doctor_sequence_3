@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>진료 체어 상태</title>
+</head>
+<body>
+  <h1>진료 체어 상태</h1>
+
+  <p>현재 진료중인 체어: <span id="currentChair">선택되지 않음</span></p>
+
+  <!-- 10개의 버튼 -->
+  <button onclick="selectChair('1번')">1번</button>
+  <button onclick="selectChair('2번')">2번</button>
+  <button onclick="selectChair('3번')">3번</button>
+  <button onclick="selectChair('4번')">4번</button>
+  <button onclick="selectChair('5번')">5번</button>
+  <button onclick="selectChair('6번')">6번</button>
+  <button onclick="selectChair('7번')">7번</button>
+  <button onclick="selectChair('8번')">8번</button>
+  <button onclick="selectChair('임플란트실_1')">임플란트실_1</button>
+  <button onclick="selectChair('임플란트실_2')">임플란트실_2</button>
+
+  <script>
+    const currentChairElement = document.getElementById('currentChair');
+    const ws = new WebSocket('ws://localhost:8080');
+
+    // 서버에서 메시지를 받으면 현재 체어 상태를 업데이트
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      currentChairElement.textContent = data.chair + ' 진료 중';
+    };
+
+    // 체어를 선택하면 서버에 선택한 체어 정보를 전송
+    function selectChair(chairName) {
+      ws.send(JSON.stringify({ chair: chairName }));
+    }
+  </script>
+</body>
+</html>
